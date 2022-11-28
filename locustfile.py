@@ -26,7 +26,7 @@ class PerformanceTestUser(HttpUser):
                                         headers={'Content-Type': 'application/x-www-form-urlencoded',
                                                  "accept": "application/json"},
                                         data=f"username={self.name}&password={self.pwd}")
-            if 'access_token' in response.json():
+            if response.status_code == 200:
                 self.token = response.json()['access_token']
                 break
 
