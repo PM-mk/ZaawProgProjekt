@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from io import BytesIO
 from PIL import Image, ImageOps
 
+import pprint
+
 
 def miller_rabin_test(n, k=14):
     """n - number to check
@@ -139,6 +141,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if not user:
         print(form_data.username)
         print(form_data.password)
+        print("\n")
+        pprint.pprint(users_db)
+        print("\n")
         print(users_db[form_data.username])
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
