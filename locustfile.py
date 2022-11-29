@@ -29,10 +29,14 @@ class PerformanceTestUser(HttpUser):
             if response.status_code == 200:
                 self.token = response.json()['access_token']
                 break
-
-    # Request tokena zloopowany ze względu na to że na zdeployowanej aplikacji
-    # endpoint nie oddaje tokena w 50% przypadków, na localhost to się nie dzieje.
-    # Wymuszam aby każdy user miał token przed testowaniem reszty endpointów
+    """
+    Request tokena zloopowany ze względu na to że na zdeployowanej aplikacji
+    endpoint nie oddaje tokena w 50% przypadków, na localhost to się nie dzieje.
+    Wymuszam aby każdy user miał token przed testowaniem reszty endpointów.
+    Update: dziwne zachowanie /token i /time wynika z tego że endpointy, odnosząc się
+    do users_db odbierają czasami pusty dict. Zmieniłem get_user() tak aby wyczekał
+    na odbiór poprawnego dicta.
+    """
 
     @task
     def test_prime(self):
@@ -40,7 +44,7 @@ class PerformanceTestUser(HttpUser):
         self.client.get(f"/prime/{number}", name="/prime")
 
     @task
-    def test_time(self):  # to samo co token, sukces ok. 50%
+    def test_time(self):
         self.client.get("/time", headers={'accept': 'text/plain', 'Authorization': f'Bearer {self.token}'})
 
     @task
