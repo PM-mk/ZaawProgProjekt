@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from io import BytesIO
 from PIL import Image, ImageOps
 
-import pprint
+# import pprint
 
 
 def miller_rabin_test(n, k=14):
@@ -83,6 +83,10 @@ def get_password_hash(password):
 
 
 def get_user(username: str):
+    while True:
+        if users_db:
+            break
+
     if username in users_db:
         user = users_db[username]
         return user
@@ -139,12 +143,12 @@ async def register(username: str, password: str):
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
-        print(form_data.username)
-        print(form_data.password)
-        print("\n")
-        pprint.pprint(users_db)
-        print("\n")
-        print(users_db[form_data.username])
+        # print(form_data.username)
+        # print(form_data.password)
+        # print("\n")
+        # pprint.pprint(users_db)
+        # print("\n")
+        # print(users_db[form_data.username])
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
