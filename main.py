@@ -81,7 +81,7 @@ def get_password_hash(password):
 
 
 def get_user(username: str):
-    while True:  # heroku bug? dict sometimes appears as empty
+    while True:  # TODO: make users_db a synchronized object due to problems with multithreading on deploy.
         if users_db:
             break
 
