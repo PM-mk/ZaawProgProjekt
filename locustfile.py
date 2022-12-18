@@ -30,12 +30,7 @@ class PerformanceTestUser(HttpUser):
                 self.token = response.json()['access_token']
                 break
     """
-    Request tokena zloopowany ze względu na to że na zdeployowanej aplikacji
-    endpoint nie oddaje tokena w 50% przypadków, na localhost to się nie dzieje.
-    Wymuszam aby każdy user miał token przed testowaniem reszty endpointów.
-    Update: dziwne zachowanie /token i /time wynika z tego że endpointy, odnosząc się
-    do users_db odbierają czasami pusty dict. Zmieniłem get_user() tak aby wyczekał
-    na odbiór poprawnego dicta.
+    Token request has been looped due to problems with multi thread access to user_db on deployed application.
     """
 
     @task
